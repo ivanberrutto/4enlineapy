@@ -31,18 +31,18 @@ findeljuego = False
 turno = 1
 dibujartablero(tablero)
 while not findeljuego:
-	if turno==1:
-		col = int(input("Haz tu jugada Jugador 1 (0-6):"))
-		print(col)
-		if (col>cantidadfilas):
-			print("Tienes que elegir una columna del 0 al 6")
-			continue
-		if(posicionvalida(tablero,col)):
-			fila = proximafila(tablero,col)
-			ponerficha(tablero,fila,col,turno)
-			dibujartablero(tablero)
+	#if turno==1:
+	col = int(input("Haz tu jugada Jugador "+str(turno)+" (0-6):"))
+	print(col)
+	if (col>cantidadfilas):
+		print("Tienes que elegir una columna del 0 al 6")
+		continue
+	if(posicionvalida(tablero,col)):
+		fila = proximafila(tablero,col)
+		ponerficha(tablero,fila,col,turno)
+		dibujartablero(tablero)
 
-	else:
+	"""else:
 		col = int(input("Haz tu jugada Jugador 2 (0-6):"))
 		if (col>cantidadfilas):
 			print("Tienes que elegir una columna del 0 al 6")
@@ -50,6 +50,6 @@ while not findeljuego:
 		if(posicionvalida(tablero,col)):
 			fila = proximafila(tablero,col)
 			ponerficha(tablero,fila,col,turno)
-			dibujartablero(tablero)
+			dibujartablero(tablero)"""
 
 	turno=1 if turno==2 else 2
