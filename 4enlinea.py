@@ -2,6 +2,7 @@ import numpy
 
 cantidadfilas=6
 cantidadcol=7
+
 #Verifica si se puede poner ficha en esa columna, entrega True si se puede(0)
 def posicionvalida(tablero, col):
 	return tablero[cantidadfilas-1][col] == 0
@@ -24,7 +25,9 @@ def creartablero():
 def dibujartablero(tablero):
 	print(numpy.flip(tablero,0))
 
+
 def movimientoganador(tablero,turno):
+	asd=0
 	#Movimientos horizontales
 
 	#Hay que restarle 3 a la cantidad de columnas porque no puede comenzar un horizontal ganador en las ultimas 3 columnas
@@ -32,8 +35,22 @@ def movimientoganador(tablero,turno):
 		for r in range(cantidadfilas):
 			if tablero[r][c] == turno and tablero[r][c+1] == turno and tablero[r][c+2] == turno and tablero[r][c+3] == turno:
 				return True
-
-
+	#Movimientos verticales
+	for c in range(cantidadcol):
+		# Hay que restarle 3 a la cantidad de filas porque no puede comenzar un vertical ganador en las ultimas 3 filas
+		for r in range(cantidadfilas-3):
+			if tablero[r][c] == turno and tablero[r+1][c] == turno and tablero[r+2][c] == turno and tablero[r+3][c] == turno:
+				return True
+	#Diagonal positiva
+	for c in range(cantidadcol-3):
+		for r in range(cantidadfilas-3):
+			if tablero[r][c] == turno and tablero[r+1][c+1] == turno and tablero[r+2][c+2] == turno and tablero[r+3][c+3] == turno:
+				return True
+	#Diagonal negativa
+	for c in range(cantidadcol-3):
+		for r in range(cantidadfilas):
+			if tablero[r][c] == turno and tablero[r-1][c+1] == turno and tablero[r-2][c+2] == turno and tablero[r-3][c+3] == turno:
+				return True
 
 
 tablero = creartablero()
