@@ -1,7 +1,10 @@
 import numpy
-
 cantidadfilas=6
 cantidadcol=7
+
+
+
+
 
 #Verifica si se puede poner ficha en esa columna, entrega True si se puede(0)
 def posicionvalida(tablero, col):
@@ -127,6 +130,9 @@ def movimientoganador(tablero,fila,col,turno):
 			return True
 		n+=1
 
+	if not 0 in tablero:
+		print("¡Hubo un empate!")
+
 
 
 
@@ -144,13 +150,14 @@ while not findeljuego:
 	if (col>cantidadfilas):
 		print("Tienes que elegir una columna del 0 al 6")
 		continue
-	if(posicionvalida(tablero,col)):
-		fila = proximafila(tablero,col)
-		ponerficha(tablero,fila,col,turno)
-		dibujartablero(tablero)
-		if movimientoganador(tablero,fila,col,turno):
-			print("Gano el jugador "+str(turno)+"!")
-			findeljuego=True
+	if not(posicionvalida(tablero,col)):
+		continue
+	fila = proximafila(tablero,col)
+	ponerficha(tablero,fila,col,turno)
+	dibujartablero(tablero)
+	if movimientoganador(tablero,fila,col,turno):
+		print("Gano el jugador "+str(turno)+"!")
+		findeljuego=True
 
 	"""else:
 		col = int(input("Haz tu jugada Jugador 2 (0-6):"))
