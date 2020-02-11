@@ -1,8 +1,22 @@
 import numpy
+import pygame
+import sys
 cantidadfilas=6
 cantidadcol=7
 
+azul=(0,0,255)
+amarillo= (255,255,0)
+rojo=(255,0,0)
+negro=(0,0,0)
 
+
+
+
+def graficartablero(tablero):
+	for c in range(cantidadcol):
+		for r in range(cantidadfilas):
+			pygame.draw.rect(pant,rojo,(c*tamañocasilla,r*tamañocasilla+tamañocasilla,tamañocasilla,tamañocasilla))
+			pygame.draw.circle(pant,negro,(int(c*tamañocasilla+tamañocasilla/2),int(r*tamañocasilla+tamañocasilla+tamañocasilla/2)),radio)
 
 
 
@@ -140,33 +154,60 @@ def movimientoganador(tablero,fila,col,turno):
 tablero = creartablero()
 #print(tablero)
 
+
+#Inicia la libreria de pygame
+pygame.init()
+tamañocasilla= 100
+radio= int((tamañocasilla/2.1))
+alto = (cantidadfilas+1) * tamañocasilla
+ancho= cantidadcol * tamañocasilla
+
+tamañodeljuego=(ancho,alto)
+
+pant = pygame.display.set_mode(tamañodeljuego)
+
+graficartablero(tablero)
+pygame.display.update()
+
+
+
+
+
+
 findeljuego = False
 turno = 1
 dibujartablero(tablero)
 while not findeljuego:
-	#if turno==1:
-	col = int(input("Haz tu jugada Jugador "+str(turno)+" (0-6):"))
-	print(col)
-	if (col>cantidadfilas):
-		print("Tienes que elegir una columna del 0 al 6")
-		continue
-	if not(posicionvalida(tablero,col)):
-		continue
-	fila = proximafila(tablero,col)
-	ponerficha(tablero,fila,col,turno)
-	dibujartablero(tablero)
-	if movimientoganador(tablero,fila,col,turno):
-		print("Gano el jugador "+str(turno)+"!")
-		findeljuego=True
 
-	"""else:
-		col = int(input("Haz tu jugada Jugador 2 (0-6):"))
-		if (col>cantidadfilas):
-			print("Tienes que elegir una columna del 0 al 6")
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			sys.exit()
+		if event.type == pygame.MOUSEBUTTONDOWN:
 			continue
-		if(posicionvalida(tablero,col)):
+
+			"""#if turno==1:
+			col = int(input("Haz tu jugada Jugador "+str(turno)+" (0-6):"))
+			print(col)
+			if (col>cantidadfilas):
+				print("Tienes que elegir una columna del 0 al 6")
+				continue
+			if not(posicionvalida(tablero,col)):
+				continue
 			fila = proximafila(tablero,col)
 			ponerficha(tablero,fila,col,turno)
-			dibujartablero(tablero)"""
+			dibujartablero(tablero)
+			if movimientoganador(tablero,fila,col,turno):
+				print("Gano el jugador "+str(turno)+"!")
+				findeljuego=True
 
-	turno=1 if turno==2 else 2
+			#else:
+				#col = int(input("Haz tu jugada Jugador 2 (0-6):"))
+				#if (col>cantidadfilas):
+				#	print("Tienes que elegir una columna del 0 al 6")
+				#	continue
+				#if(posicionvalida(tablero,col)):
+				#	fila = proximafila(tablero,col)
+				#	ponerficha(tablero,fila,col,turno)
+				#	dibujartablero(tablero)
+
+			turno=1 if turno==2 else 2"""
