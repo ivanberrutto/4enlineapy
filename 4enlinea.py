@@ -12,6 +12,16 @@ negro=(0,0,0)
 
 colorjugadores = [azul,amarillo]
 
+def reiniciarjuego():
+	tablero = numpy.zeros((cantidadfilas,cantidadcol))
+	turno = 1
+	for c in range(cantidadcol):
+		for r in range(cantidadfilas):
+			pygame.draw.rect(pant,rojo,(c*tamañocasilla,r*tamañocasilla+tamañocasilla,tamañocasilla,tamañocasilla))
+			pygame.draw.circle(pant,negro,(int(c*tamañocasilla+tamañocasilla/2),int(r*tamañocasilla+tamañocasilla+tamañocasilla/2)),radio)
+
+	return (tablero,turno)
+
 
 def graficartablero(tablero,turno):
 	for c in range(cantidadcol):
@@ -202,6 +212,10 @@ while not findeljuego:
 			pygame.draw.circle(pant, colorjugadores[turno-1], (pos,int(tamañocasilla/2)),radio)
 			pygame.display.update()
 
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_r:
+				tablero,turno = reiniciarjuego()
+
 
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			print(event.pos)
@@ -224,6 +238,11 @@ while not findeljuego:
 			graficarjugada(tablero,fila,col,turno)
 			pygame.display.update()
 			if movimientoganador(tablero,fila,col,turno):
+				pygame.draw.rect(pant,negro,(0,0,ancho,tamañocasilla))
+				label = myfont.render("Gano el jugador "+str(turno),1,colorjugadores[turno-1])
+				pant.blit(label,(40,10))
+				print("Gano el jugador "+str(turno)+"!")
+				pygame.display.update()
 				pygame.time.wait(3000)
 				findeljuego=True
 
