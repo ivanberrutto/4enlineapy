@@ -1,6 +1,7 @@
 import numpy
 import pygame
 import sys
+import math
 cantidadfilas=6
 cantidadcol=7
 
@@ -9,14 +10,23 @@ amarillo= (255,255,0)
 rojo=(255,0,0)
 negro=(0,0,0)
 
+colorjugadores = [azul,amarillo]
 
 
-
-def graficartablero(tablero):
+def graficartablero(tablero,turno):
 	for c in range(cantidadcol):
 		for r in range(cantidadfilas):
 			pygame.draw.rect(pant,rojo,(c*tamañocasilla,r*tamañocasilla+tamañocasilla,tamañocasilla,tamañocasilla))
 			pygame.draw.circle(pant,negro,(int(c*tamañocasilla+tamañocasilla/2),int(r*tamañocasilla+tamañocasilla+tamañocasilla/2)),radio)
+
+	#for c in range(cantidadcol):
+	#	for r in range(cantidadfilas):
+	#		if tablero[r][c] == turno:
+	#			pygame.draw.circle(pant,colorjugadores[turno],(int(c*tamañocasilla+tamañocasilla/2),alto-int(r*tamañocasilla+tamañocasilla/2)),radio)
+
+
+def graficarjugada(tablero,fila,col,turno):
+	pygame.draw.circle(pant,colorjugadores[turno-1],(int(col*tamañocasilla+tamañocasilla/2),alto-int(fila*tamañocasilla+tamañocasilla/2)),radio)
 
 
 
@@ -166,8 +176,7 @@ tamañodeljuego=(ancho,alto)
 
 pant = pygame.display.set_mode(tamañodeljuego)
 
-graficartablero(tablero)
-pygame.display.update()
+
 
 
 
@@ -176,17 +185,33 @@ pygame.display.update()
 
 findeljuego = False
 turno = 1
+graficartablero(tablero,turno)
+pygame.display.update()
 dibujartablero(tablero)
+
+myfont = pygame.font.SysFont("monospace",50)
 while not findeljuego:
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			sys.exit()
-		if event.type == pygame.MOUSEBUTTONDOWN:
-			continue
 
-			"""#if turno==1:
-			col = int(input("Haz tu jugada Jugador "+str(turno)+" (0-6):"))
+		if event.type == pygame.MOUSEMOTION:
+			pygame.draw.rect(pant,negro,(0,0,ancho,tamañocasilla))
+			pos = event.pos[0]
+			pygame.draw.circle(pant, colorjugadores[turno-1], (pos,int(tamañocasilla/2)),radio)
+			pygame.display.update()
+
+
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			print(event.pos)
+
+			#if turno==1:
+
+			pos = event.pos[0]
+			#Redondea para abajo
+			col =  int(math.floor(pos/tamañocasilla))
+			#col = int(input("Haz tu jugada Jugador "+str(turno)+" (0-6):"))
 			print(col)
 			if (col>cantidadfilas):
 				print("Tienes que elegir una columna del 0 al 6")
@@ -196,8 +221,10 @@ while not findeljuego:
 			fila = proximafila(tablero,col)
 			ponerficha(tablero,fila,col,turno)
 			dibujartablero(tablero)
+			graficarjugada(tablero,fila,col,turno)
+			pygame.display.update()
 			if movimientoganador(tablero,fila,col,turno):
-				print("Gano el jugador "+str(turno)+"!")
+				pygame.time.wait(3000)
 				findeljuego=True
 
 			#else:
@@ -210,4 +237,4 @@ while not findeljuego:
 				#	ponerficha(tablero,fila,col,turno)
 				#	dibujartablero(tablero)
 
-			turno=1 if turno==2 else 2"""
+			turno=1 if turno==2 else 2
