@@ -127,7 +127,7 @@ while not comienzodeljuego:
 				sys.exit()
 
 
-colorjugadores = [azul,negro]
+colorjugadores = [azul,amarillo]
 def reiniciarjuego():
 	tablero = numpy.zeros((cantidadfilas,cantidadcol))
 	turno = 1
