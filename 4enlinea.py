@@ -2,6 +2,16 @@ import numpy
 import pygame
 import sys
 import math
+
+#Inicia la libreria de pygame
+pygame.init()
+
+
+
+
+
+myfont = pygame.font.SysFont("monospace",50)
+
 cantidadfilas=6
 cantidadcol=7
 
@@ -9,9 +19,115 @@ azul=(0,0,255)
 amarillo= (255,255,0)
 rojo=(255,0,0)
 negro=(0,0,0)
+verde=(0,143,57)
 
-colorjugadores = [azul,amarillo]
 
+pantmenu = pygame.display.set_mode((800,600))
+
+class boton():
+    def __init__(self, color, x,y,ancho,alto, texto='', colordeltexto=negro):
+        self.color = color
+        self.x = x
+        self.y = y
+        self.ancho = ancho
+        self.alto = alto
+        self.texto = texto
+        self.colordeltexto = colordeltexto
+
+    def imprimir(self,pant,outline=None):
+        #Este metodo dibuja el boton
+        if outline:
+            pygame.draw.rect(pant, outline, (self.x-2,self.y-2,self.ancho+4,self.alto+4),0)
+            
+        pygame.draw.rect(pant, self.color, (self.x,self.y,self.ancho,self.alto),0)
+        
+        if self.texto != '':
+            font = pygame.font.SysFont('comicsans', 60)
+            texto = font.render(self.texto, 1, self.colordeltexto)
+            pant.blit(texto, (self.x + (self.ancho/2 - texto.get_width()/2), self.y + (self.alto/2 - texto.get_height()/2)))
+
+    def isOver(self, pos):
+        #Detecta si el mouse esta sobre el boton
+        if pos[0] > self.x and pos[0] < self.x + self.ancho:
+            if pos[1] > self.y and pos[1] < self.y + self.alto:
+                return True
+            
+        return False
+
+botonjugar = boton(azul,100,100,100,100,"Jugar")
+
+botontutorial = boton(azul,200,200,100,100,"Tutorial")
+
+botonsalir = boton(azul,300,300,100,100,"Salir")
+#pygame.draw.rect(pantmenu,rojo,(100,100,100,100))
+#label = myfont.render("Jugar",1,(255,255,255))
+#pantmenu.blit(label,(100,100))
+pygame.display.update()
+
+def imprimirbotones():
+	pantmenu.fill((255,255,255))
+	botonjugar.imprimir(pantmenu,negro)
+	botontutorial.imprimir(pantmenu,negro)
+	botonsalir.imprimir(pantmenu,negro)
+	pygame.display.update()
+
+
+comienzodeljuego=False
+while not comienzodeljuego:
+	imprimirbotones()
+	for event in pygame.event.get():
+		pos = pygame.mouse.get_pos()
+
+		if event.type == pygame.QUIT:
+			sys.exit()
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_j:
+				comienzodeljuego=True
+		if event.type == pygame.MOUSEMOTION:
+			if botonjugar.isOver(pos):
+				botonjugar.color=verde
+			else:
+				botonjugar.color=azul
+
+			if botontutorial.isOver(pos):
+				botontutorial.color=verde
+			else:
+				botontutorial.color=azul
+
+			if botonsalir.isOver(pos):
+				botonsalir.color=verde
+			else:
+				botonsalir.color=azul
+
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			if botonjugar.isOver(pos):
+				comienzodeljuego=True
+
+			if botontutorial.isOver(pos):
+				pantmenu.fill((255,255,255))
+				pantmenu.blit(pygame.image.load("tutorial.jpg"), (0,0))
+				botonvolver = boton(azul,0,0,100,100,"Volver")
+				botonvolver.imprimir(pantmenu,negro)
+				pygame.display.update()
+				volver=False
+				while not volver:
+					for event in pygame.event.get():
+						pos = pygame.mouse.get_pos()
+						if event.type == pygame.KEYDOWN:
+							if event.key == pygame.K_ESCAPE:
+								volver=True
+						if event.type == pygame.QUIT:
+							sys.exit()
+						if event.type == pygame.MOUSEBUTTONDOWN:
+							if botonvolver.isOver(pos):
+								volver=True
+
+
+			if botonsalir.isOver(pos):
+				sys.exit()
+
+
+colorjugadores = [azul,negro]
 def reiniciarjuego():
 	tablero = numpy.zeros((cantidadfilas,cantidadcol))
 	turno = 1
@@ -175,15 +291,14 @@ tablero = creartablero()
 #print(tablero)
 
 
-#Inicia la libreria de pygame
-pygame.init()
+
 tamañocasilla= 100
 radio= int((tamañocasilla/2.1))
 alto = (cantidadfilas+1) * tamañocasilla
 ancho= cantidadcol * tamañocasilla
 
 tamañodeljuego=(ancho,alto)
-
+print(tamañodeljuego)
 pant = pygame.display.set_mode(tamañodeljuego)
 
 
@@ -199,7 +314,7 @@ graficartablero(tablero,turno)
 pygame.display.update()
 dibujartablero(tablero)
 
-myfont = pygame.font.SysFont("monospace",50)
+
 while not findeljuego:
 
 	for event in pygame.event.get():
@@ -240,10 +355,10 @@ while not findeljuego:
 			if movimientoganador(tablero,fila,col,turno):
 				pygame.draw.rect(pant,negro,(0,0,ancho,tamañocasilla))
 				label = myfont.render("Gano el jugador "+str(turno),1,colorjugadores[turno-1])
-				pant.blit(label,(40,10))
+				pant.blit(label,(40,20))
 				print("Gano el jugador "+str(turno)+"!")
 				pygame.display.update()
-				pygame.time.wait(3000)
+				pygame.time.wait(30000)
 				findeljuego=True
 
 			#else:
