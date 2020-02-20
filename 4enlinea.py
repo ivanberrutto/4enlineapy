@@ -9,9 +9,7 @@ def main():
 
 
 
-
-
-
+	cantidadjugadores=2
 	cantidadfilas=6
 	cantidadcol=7
 
@@ -20,8 +18,15 @@ def main():
 	rojo=(255,0,0)
 	negro=(0,0,0)
 	verde=(0,143,57)
+	blanco=(255,255,255)
+	rosa = (234,137,154)
+	violeta = (76,40,130)
+	celeste = (81,209,246)
+	marron = (78,59,0)
+	naranja = (255,128,0)
+	gris = (156,156,156)
 
-
+	colorjugadores = []
 	pantmenu = pygame.display.set_mode((800,600))
 	pygame.display.set_caption('4 en Linea')
 	pygame.display.set_icon(pygame.image.load("icono.png"))
@@ -35,17 +40,17 @@ def main():
 	        self.texto = texto
 	        self.colordeltexto = colordeltexto
 
-	    def imprimir(self,win,outline=None):
+	    def imprimir(self,pant,outline=None):
 	        #Este metodo dibuja el boton
 	        if outline:
-	            pygame.draw.rect(win, outline, (self.x-2,self.y-2,self.ancho+4,self.alto+4),0)
+	            pygame.draw.rect(pant, outline, (self.x-2,self.y-2,self.ancho+4,self.alto+4),0)
 	            
-	        pygame.draw.rect(win, self.color, (self.x,self.y,self.ancho,self.alto),0)
+	        pygame.draw.rect(pant, self.color, (self.x,self.y,self.ancho,self.alto),0)
 	        
 	        if self.texto != '':
-	            font = pygame.font.SysFont('comicsans', 60)
+	            font = pygame.font.SysFont('comicsans', 30)
 	            texto = font.render(self.texto, 1, self.colordeltexto)
-	            win.blit(texto, (self.x + (self.ancho/2 - texto.get_width()/2), self.y + (self.alto/2 - texto.get_height()/2)))
+	            pant.blit(texto, (self.x + (self.ancho/2 - texto.get_width()/2), self.y + (self.alto/2 - texto.get_height()/2)))
 
 	    def isOver(self, pos):
 	        #Detecta si el mouse esta sobre el boton
@@ -55,21 +60,24 @@ def main():
 	            
 	        return False
 
-	botonjugar = boton(azul,100,100,100,100,"Jugar")
+	botonjugar = boton(rojo,300,10,200,100,"Jugar")
 
-	botontutorial = boton(azul,200,200,100,100,"Tutorial")
+	botontutorial = boton(rojo,300,160,200,100,"Tutorial")
 
-	botonsalir = boton(azul,300,300,100,100,"Salir")
+	botonconfiguracion = boton(rojo,300,310,200,100,"Colores")
+
+	botonsalir = boton(rojo,300,460,200,100,"Salir")
 	#pygame.draw.rect(pantmenu,rojo,(100,100,100,100))
 	#label = myfont.render("Jugar",1,(255,255,255))
 	#pantmenu.blit(label,(100,100))
 	pygame.display.update()
 
 	def imprimirbotones():
-		pantmenu.fill((255,255,255))
+		pantmenu.fill(blanco)
 		botonjugar.imprimir(pantmenu,negro)
 		botontutorial.imprimir(pantmenu,negro)
 		botonsalir.imprimir(pantmenu,negro)
+		botonconfiguracion.imprimir(pantmenu,negro)
 		pygame.display.update()
 
 
@@ -88,26 +96,31 @@ def main():
 				if botonjugar.isOver(pos):
 					botonjugar.color=verde
 				else:
-					botonjugar.color=azul
+					botonjugar.color=rojo
 
 				if botontutorial.isOver(pos):
 					botontutorial.color=verde
 				else:
-					botontutorial.color=azul
+					botontutorial.color=rojo
 
 				if botonsalir.isOver(pos):
 					botonsalir.color=verde
 				else:
-					botonsalir.color=azul
+					botonsalir.color=rojo
+
+				if botonconfiguracion.isOver(pos):
+					botonconfiguracion.color=verde
+				else:
+					botonconfiguracion.color=rojo
 
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if botonjugar.isOver(pos):
 					comienzodeljuego=True
 
 				if botontutorial.isOver(pos):
-					pantmenu.fill((255,255,255))
+					pantmenu.fill(blanco)
 					pantmenu.blit(pygame.image.load("tutorial.jpg"), (0,0))
-					botonvolver = boton(azul,0,0,100,100,"Volver")
+					botonvolver = boton(rojo,10,10,100,50,"Volver")
 					botonvolver.imprimir(pantmenu,negro)
 					pygame.display.update()
 					volver=False
@@ -126,9 +139,97 @@ def main():
 
 				if botonsalir.isOver(pos):
 					sys.exit()
+				if botonconfiguracion.isOver(pos):
+					pantmenu.fill(blanco)
+					configfont = pygame.font.SysFont("monospace",20)
+					label = configfont.render("Elegir color",1,negro)
+					pantmenu.blit(label,(300,20))
+					botonvolver = boton(rojo,10,10,100,50,"Volver")
+					botonvolver.imprimir(pantmenu,negro)
+					pygame.display.update()
+					volver=False
+					'''
+					botonverde=[]
+					botonamarillo=[]
+					botonazul=[]
+					botonrosa=[]
+					botonblanco=[]
+					botonvioleta=[]
+
+					'''
+					botonescolores=[]
+					botonverde= boton(verde,10,200,100,100,"verde")
+					botonverde.imprimir(pantmenu,negro)
+					botonescolores.append(botonverde)
+					botonamarillo=boton(amarillo,150,200,100,100,"amarillo")
+					botonamarillo.imprimir(pantmenu,negro)
+					botonescolores.append(botonamarillo)
+					botonazul=boton(azul,300,200,100,100,"azul")
+					botonazul.imprimir(pantmenu,negro)
+					botonescolores.append(botonazul)
+					botonrosa=boton(rosa,450,200,100,100,"rosa")
+					botonrosa.imprimir(pantmenu,negro)
+					botonescolores.append(botonrosa)
+					botonvioleta=boton(violeta,600,200,100,100,"violeta")
+					botonvioleta.imprimir(pantmenu,negro)
+					botonescolores.append(botonvioleta)
+
+					botonceleste=boton(celeste,10,400,100,100,"celeste")
+					botonceleste.imprimir(pantmenu,negro)
+					botonescolores.append(botonceleste)
+					botonmarron=boton(marron,150,400,100,100,"marron")
+					botonmarron.imprimir(pantmenu,negro)
+					botonescolores.append(botonmarron)
+					botonblanco=boton(blanco,300,400,100,100,"blanco")
+					botonblanco.imprimir(pantmenu,negro)
+					botonescolores.append(botonblanco)	
+					botonnaranja=boton(naranja,450,400,100,100,"naranja")
+					botonnaranja.imprimir(pantmenu,negro)
+					botonescolores.append(botonnaranja)	
+					botongris=boton(gris,600,400,100,100,"gris")
+					botongris.imprimir(pantmenu,negro)
+					botonescolores.append(botongris)			
+					pygame.display.update()
+
+					colorjugadores.clear()
+					x=0
+					while x<cantidadjugadores:
+						pygame.draw.rect(pantmenu,blanco,(50,150,600,40))
+						label = configfont.render("Elegi color Jugador "+str(x+1),1,negro)
+						pantmenu.blit(label,(300,150))
+						pygame.display.update()
+						for event in pygame.event.get():
+							pos = pygame.mouse.get_pos()
+							if event.type == pygame.KEYDOWN:
+								if event.key == pygame.K_ESCAPE:
+									x=9999
+									continue
+							if event.type == pygame.QUIT:
+								sys.exit()
+							if event.type == pygame.MOUSEBUTTONDOWN:
+								if botonvolver.isOver(pos):
+									x=9999
+									continue
+								for y in range(len(botonescolores)):
+									if botonescolores[y].isOver(pos):
+										colordelboton=botonescolores[y].color
+										if colordelboton in colorjugadores:
+											pygame.draw.rect(pantmenu,blanco,(50,450,600,40))
+											label= configfont.render("Ese color ya esta seleccionado",1,rojo)
+											pantmenu.blit(label,(300,500))
+											continue
+
+										botonescolores[y].imprimir(pantmenu,rojo)
+										colordelboton=botonescolores[y].color
+										print(colordelboton)
+										colorjugadores.append(colordelboton)
+										x+=1
 
 
-	colorjugadores = [azul,amarillo]
+	if len(colorjugadores)==0:
+		colorjugadores=[azul,amarillo]
+	if len(colorjugadores)==1:
+		colorjugadores.append(amarillo)
 	puntuacionjugadores = [0,0]
 	def reiniciarjuego():
 		tablero = numpy.zeros((cantidadfilas,cantidadcol))
@@ -391,6 +492,7 @@ def main():
 								if event.key == pygame.K_r:
 									tablero,turno = reiniciarjuego()
 									accion = True
+					continue
 					#pygame.time.wait(10000)
 					#findeljuego=True
 
