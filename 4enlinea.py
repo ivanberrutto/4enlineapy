@@ -388,8 +388,6 @@ def main():
 				return True
 			n+=1
 
-		if not 0 in tablero:
-			print("¡Hubo un empate!")
 
 
 
@@ -495,6 +493,14 @@ def main():
 					continue
 					#pygame.time.wait(10000)
 					#findeljuego=True
+				if not 0 in tablero:
+					label = cartelfont.render("¡Hubo un empate!",1,rojo)
+					pant.blit(label,(40,20))
+					pygame.display.update()
+					pygame.time.wait(1000)
+					tablero,turno = reiniciarjuego()
+					continue
+
 
 				#else:
 					#col = int(input("Haz tu jugada Jugador 2 (0-6):"))
