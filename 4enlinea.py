@@ -214,9 +214,9 @@ def main():
 									if botonescolores[y].isOver(pos):
 										colordelboton=botonescolores[y].color
 										if colordelboton in colorjugadores:
-											pygame.draw.rect(pantmenu,blanco,(50,450,600,40))
+											#pygame.draw.rect(pantmenu,blanco,(50,450,600,40))
 											label= configfont.render("Ese color ya esta seleccionado",1,rojo)
-											pantmenu.blit(label,(300,500))
+											pantmenu.blit(label,(200,335))
 											continue
 
 										botonescolores[y].imprimir(pantmenu,rojo)
