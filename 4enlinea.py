@@ -238,7 +238,13 @@ def main():
 			for r in range(cantidadfilas):
 				pygame.draw.rect(pant,rojo,(c*tamañocasilla,r*tamañocasilla+tamañocasilla,tamañocasilla,tamañocasilla))
 				pygame.draw.circle(pant,negro,(int(c*tamañocasilla+tamañocasilla/2),int(r*tamañocasilla+tamañocasilla+tamañocasilla/2)),radio)
-
+		pygame.draw.rect(pant,negro,(0,0,ancho,tamañocasilla))
+		pos = pos = pygame.mouse.get_pos()[0]
+		for x in range(len(puntuacionjugadores)):
+			label = puntfont.render("Jug "+str(x+1)+": "+str(puntuacionjugadores[x]),1,colorjugadores[x])
+			pant.blit(label,(0,15*x+15))						
+		pygame.draw.circle(pant, colorjugadores[turno-1], (pos,int(tamañocasilla/2)),radio)
+		pygame.display.update()
 		return (tablero,turno)
 
 
@@ -412,8 +418,6 @@ def main():
 
 
 
-
-
 	findeljuego = False
 	turno = 1
 	graficartablero(tablero,turno)
@@ -502,6 +506,7 @@ def main():
 					continue
 
 
+
 				#else:
 					#col = int(input("Haz tu jugada Jugador 2 (0-6):"))
 					#if (col>cantidadfilas):
@@ -513,4 +518,6 @@ def main():
 					#	dibujartablero(tablero)
 
 				turno=1 if turno==2 else 2
+				pygame.draw.circle(pant, colorjugadores[turno-1], (pos,int(tamañocasilla/2)),radio)
+				pygame.display.update()
 main()
